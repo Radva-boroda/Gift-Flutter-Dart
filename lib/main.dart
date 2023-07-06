@@ -16,6 +16,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      routes:{
+        FriendsPage.routeName :(BuildContext context) => const FriendsPage(),
+      }
     );
   }
 }
@@ -29,13 +32,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 final _controller = TextEditingController();
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+@override
+void initState(){
+  super.initState();
+  _controller.addListener((){
+    print(_controller.text);
+  });
+}
+
+void _goNext() {
+  Navigator.of(context).pushNamed(FriendsPage.routeName);
+
   }
 
   @override
@@ -51,15 +60,19 @@ final _controller = TextEditingController();
           children: <Widget>[
             const Text('Веди назву своєї групи',),
             Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child:TextField(controller:_controller)),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: TextField(
+                controller: _controller,
+                autofocus: true,
+              ),
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: _goNext,
         tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.check),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

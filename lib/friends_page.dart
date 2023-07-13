@@ -20,11 +20,14 @@ class _FriendsPageState extends State<FriendsPage>{
   @override
   void initState() {
     super.initState();
+    _loadName();
   }
 
-   Future<void> loadName() async{
+   Future<void> _loadName() async{
      SharedPreferences prefs = await SharedPreferences.getInstance();
      final teamName = prefs.getString(teamNameKey);
+     print("Loaded name = $teamName");
+
      setState(() {
        _teamName = teamName;
      });
@@ -32,6 +35,27 @@ class _FriendsPageState extends State<FriendsPage>{
 
   @override
   Widget build (BuildContext context) {
-return Container(color: Colors.red);
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(_teamName?? ""),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _add,
+        tooltip: 'Increment',
+        child: const Icon(Icons.plus_one),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
   }
+}
+
+Future<void> _add() async {
+
 }

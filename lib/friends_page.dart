@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:santa/main.dart';
@@ -18,7 +20,9 @@ class FriendsPage extends StatefulWidget {
 class _FriendsPageState extends State<FriendsPage>{
 
   String? _teamName;
-List _friends = [];
+final List<Friend> _friens = [];
+final List<Color> _colors = [Colors.red, Colors.black, Colors.white];
+
 
   @override
   void initState() {
@@ -45,10 +49,12 @@ List _friends = [];
       ),
       body: Center(
         child: ListView.separated(
-          itemBuilder: _itemBilder,
+          itemBuilder: _itemBuilder,
             separatorBuilder: _separatorBuilder,
-            itemCount: _friends.length,
-        )),
+            itemCount: _friens.length,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        )
+      ),
         floatingActionButton: FloatingActionButton(
       onPressed: _add,
       tooltip: 'Increment',
@@ -57,10 +63,30 @@ List _friends = [];
     );
   }
 
-Widget _itemBilder(BuildContext context, int index){
-    return Container(color: Colors.black, height: 100);
-
-}
+Widget _itemBuilder(BuildContext context, int index){
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.lightBlue,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      height: 100,
+      child: Row(
+        children: [
+          SizedBox(width: 20),
+          Container(
+          width: 50,
+          height: 50,
+          decoration: BoxDecoration(
+            color: _friens[index].color,
+            shape: BoxShape.circle,
+          ),
+        ),
+          const SizedBox(width: 20),
+        Text(_friens[index].name,style: const TextStyle(color: Colors.black))
+      ],
+      ),
+    );
+  }
 
   Widget _separatorBuilder(BuildContext context, int index){
 return const SizedBox(height: 10);
@@ -68,9 +94,9 @@ return const SizedBox(height: 10);
 
 
 Future<void> _add() async {
-    final friend = Friend(_friends.length, Colors.grey, "My friend" );
+    final friend = Friend(_friens.length, _colors[Random().nextInt(_colors.length)], "My friend" );
     setState(() {
-      _friends.add(friend);
+      _friens.add(friend);
     });
 }
 }
